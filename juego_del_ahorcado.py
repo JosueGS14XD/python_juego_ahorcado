@@ -12,7 +12,7 @@ def mostrar_progreso(palabra_secreta, letras_adivinadas):
         if letra in letras_adivinadas:
             adivinado += letra
         else:
-            adivinado -= "_"
+            adivinado += "_"
     return adivinado
 
 def juego_ahorcado():
@@ -23,6 +23,33 @@ def juego_ahorcado():
 
     print("Bienvenido al juego del ahorcado")
     print(f"Tienes {intentos} intentos para adivinar la palabra secreta")
-    print(mostrar_progreso(palabra_secreta, letras_adivinadas))
+    print(mostrar_progreso(palabra_secreta, letras_adivinadas), "La cantidad de letras de la palabra es:", len(palabra_secreta))
 
+    while not juego_terminado and intentos > 0:
+        adivinanza = input("Introduce una letra: ").lower()
+
+        if len(adivinanza) != 1 or not adivinanza.isalpha():
+            print("Por favor introduzca una letra valida(solo ecribir una letra)")
+        elif adivinanza in letras_adivinadas:
+            print("Ya has utilizado esa letra, prueba con otra")
+        else:
+            letras_adivinadas.append(adivinanza)
+
+            if adivinanza in palabra_secreta:
+                print(f"Muy bien has acertado, la letra {adivinanza} esta presente en la palabra")
+            else:
+                intentos -= 1
+                print(f"Lo siento mucho la letra {adivinanza} no esta presenta en la palabra secreta")
+                print(f"Te quedan {intentos} intentos")
     
+        progreso_actual = (mostrar_progreso(palabra_secreta,letras_adivinadas))
+        print(progreso_actual)
+
+        if "_" not in progreso_actual:
+            juego_terminado = True
+            print(f"Felicitaciones has ganado!, la palabra completa es: {palabra_secreta}")
+    
+    if intentos == 0:
+        print(f"Lo siento, se te han hacado los intentos, la palabra secreta era {palabra_secreta}")
+
+juego_ahorcado()
